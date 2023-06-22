@@ -20,6 +20,8 @@ class Snake {
     ];
   }
 
+  // move() {}
+
   render() {
     if (this.context !== null && this.canvas !== null) {
       for (let i = 0; i < this.body.length; i++) {
