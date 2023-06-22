@@ -8,13 +8,28 @@
   </head>
   <body>
     <div class="container">
-      <div class="logo">Snake</div>
-      <div class="canvas-container">
-        <canvas id="background" width="300" height="300"></canvas>
-        <canvas id="snake" width="300" height="300"></canvas>
-        <canvas id="apple" width="300" height="300"></canvas>
+    <div class="logo">Snake</div>
+      <div class="content">
+        <div class="canvas-container">
+          <canvas id="background" width="300" height="300"></canvas>
+          <canvas id="snake" width="300" height="300"></canvas>
+          <canvas id="apple" width="300" height="300"></canvas>
+        </div>
+        
+        <div class="panel">
+          <button class="start">Start</button>
+          <div class="score">Score:</div>
+          <div class="controls">
+            <button class="button-up">Up</button>
+            <div class="mid-buttons">
+              <button class="button-left">Left</button>
+              <button class="button-right">Right</button>
+            </div>
+            <button class="button-down">Down</button>
+          </div>
+        </div>
+        
       </div>
-      <button class="start">Start</button>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

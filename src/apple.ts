@@ -21,6 +21,7 @@ class Apple {
 
   render() {
     if (this.context !== null && this.canvas !== null) {
+      this.context.clearRect(0,0,this.canvas.clientWidth,this.canvas.clientHeight);
       this.context.fillStyle = "red";
       this.context.fillRect(
         this.position.x * this.blockWidth,

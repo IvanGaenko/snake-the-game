@@ -31,21 +31,27 @@ class SnakeApp {
   background: InstanceType<typeof Background>;
   snake: InstanceType<typeof Snake>;
   apple: InstanceType<typeof Apple>;
-  startButton: HTMLButtonElement;
+  startButton: HTMLElement;
 
   constructor() {
     this.background = new Background();
     this.snake = new Snake(this.background.blockWidth);
     this.apple = new Apple(this.background.blockWidth);
 
-    this.startButton = document.querySelector(".start") as HTMLButtonElement;
+    this.startButton = document.querySelector(".start") as HTMLElement;
 
     this.init();
     this.setupEventListeners();
   }
 
-  setupEventListeners() {
-    this.startButton.addEventListener("click", () => console.log("hello"));
+  setupEventListeners(): void {
+  this.startButton.addEventListener("click", () => {
+    this.snake = new Snake(this.background.blockWidth);
+    this.snake.move();
+    this.snake.render();
+  });
+  
+  window.addEventListener("keydown", (e) => console.log(e.key));
   }
 
   init(): void {
