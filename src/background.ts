@@ -17,6 +17,7 @@ class Background {
 
   render() {
     if (this.context !== null && this.canvas !== null) {
+      this.context.clearRect(0,0,this.canvas.clientWidth,this.canvas.clientHeight);
       this.context.fillStyle = this.color;
       this.context.fillRect(
         0,
