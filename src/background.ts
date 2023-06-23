@@ -6,7 +6,7 @@ class Background {
   blockCount: number;
   blockWidth: number;
 
-  constructor(color = "green") {
+  constructor(color: string) {
     this.canvas = document.querySelector("#background") as HTMLCanvasElement;
     this.context = this.canvas.getContext("2d");
     this.color = color;
@@ -17,7 +17,12 @@ class Background {
 
   render() {
     if (this.context !== null && this.canvas !== null) {
-      this.context.clearRect(0,0,this.canvas.clientWidth,this.canvas.clientHeight);
+      this.context.clearRect(
+        0,
+        0,
+        this.canvas.clientWidth,
+        this.canvas.clientHeight
+      );
       this.context.fillStyle = this.color;
       this.context.fillRect(
         0,
