@@ -22,33 +22,38 @@ class Apple {
       y: 0
     };
     this.snakeBody = body;
-    
-    this._generatePosition();
+
+    this._generatePosition(this.snakeBody);
   }
-  
-  init() {
-    this._generatePosition();
+
+  init(body: Body) {
+    this._generatePosition(body);
     this.render();
   }
-  
-  _generatePosition() {
-    if (this.snakeBody.length === 0) return;
-    
+
+  _generatePosition(body: Body) {
+    if (body.length === 0) return;
+
     this.position = {
       x: Math.floor(Math.random() * this.blockCount),
-      y: Math.floor(Math.random() * this.blockCount),
+      y: Math.floor(Math.random() * this.blockCount)
     };
-    
-    for (let i = 0; i < this.snakeBody.length; i++) {
-      if (this.position.x === this.snakeBody[i].x && this.position.y === this.snakeBody[i].y) {
-        this._generatePosition();
+
+    for (let i = 0; i < body.length; i++) {
+      if (this.position.x === body[i].x && this.position.y === body[i].y) {
+        this._generatePosition(body);
       }
     }
   }
 
   render() {
     if (this.context !== null && this.canvas !== null) {
-      this.context.clearRect(0,0,this.canvas.clientWidth,this.canvas.clientHeight);
+      this.context.clearRect(
+        0,
+        0,
+        this.canvas.clientWidth,
+        this.canvas.clientHeight
+      );
       this.context.fillStyle = "red";
       this.context.fillRect(
         this.position.x * this.blockWidth,

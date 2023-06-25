@@ -7,11 +7,11 @@ export interface BodyContent {
 
 export type Body = BodyContent[];
 
-//const defaultBody = [
-  //{ x: 13, y: 9 },
-  //{ x: 14, y: 9 },
-  //{ x: 15, y: 9 }
-//];
+const defaultBody = [
+  { x: 8, y: 10 },
+  { x: 9, y: 10 },
+  { x: 10, y: 10 }
+];
 
 class Snake {
   canvas: HTMLCanvasElement | null;
@@ -20,17 +20,24 @@ class Snake {
   blockWidth: number;
 
   body: Body;
+  color: string;
 
   constructor(
     blockWidth: number,
-    body: Body
+    body: Body = JSON.parse(JSON.stringify(defaultBody)),
+    color = "blue"
   ) {
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
     this.context = this.canvas.getContext("2d");
 
     this.blockWidth = blockWidth;
     this.body = body;
-    //console.log("new snake", this.body);
+    this.color = color;
+  }
+
+  init() {
+    this.body = JSON.parse(JSON.stringify(defaultBody));
+    this.render();
   }
 
   move(direction: string, isGrowUp = false) {
@@ -42,7 +49,7 @@ class Snake {
     if (!isGrowUp) {
       this.body.shift();
     }
-    
+
     this.body.push(snakeHead);
   }
 
@@ -55,7 +62,8 @@ class Snake {
         this.canvas.clientHeight
       );
       for (let i = 0; i < this.body.length; i++) {
-        this.context.fillStyle = i === this.body.length - 1 ? "yellow" : "blue";
+        this.context.fillStyle =
+          i === this.body.length - 1 ? "yellow" : this.color;
         this.context.fillRect(
           this.body[i].x * this.blockWidth,
           this.body[i].y * this.blockWidth,

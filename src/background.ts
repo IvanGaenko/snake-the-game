@@ -15,7 +15,20 @@ class Background {
     this.blockWidth = this.canvas.clientWidth / this.blockCount;
   }
 
-  render() {
+  showNotification() {
+    if (this.context !== null && this.canvas !== null) {
+      this.render("black");
+      this.context.fillStyle = "white";
+      this.context.font = "36px verdana";
+      this.context.fillText(
+        "Game Over!",
+        this.canvas.clientWidth / 7,
+        this.canvas.clientHeight / 2
+      );
+    }
+  }
+
+  render(color = this.color) {
     if (this.context !== null && this.canvas !== null) {
       this.context.clearRect(
         0,
@@ -23,7 +36,7 @@ class Background {
         this.canvas.clientWidth,
         this.canvas.clientHeight
       );
-      this.context.fillStyle = this.color;
+      this.context.fillStyle = color;
       this.context.fillRect(
         0,
         0,
