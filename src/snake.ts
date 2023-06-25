@@ -5,12 +5,13 @@ export interface BodyContent {
   y: number;
 }
 
-type Body = BodyContent[];
+export type Body = BodyContent[];
 
-const defaultBody = [
-  { x: 6, y: 0 },
-  { x: 7, y: 0 }
-];
+//const defaultBody = [
+  //{ x: 13, y: 9 },
+  //{ x: 14, y: 9 },
+  //{ x: 15, y: 9 }
+//];
 
 class Snake {
   canvas: HTMLCanvasElement | null;
@@ -19,38 +20,30 @@ class Snake {
   blockWidth: number;
 
   body: Body;
-  currentDirection: string;
 
   constructor(
     blockWidth: number,
-    body: Body = defaultBody,
-    currentDirection = "ArrowRight"
+    body: Body
   ) {
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
     this.context = this.canvas.getContext("2d");
 
     this.blockWidth = blockWidth;
     this.body = body;
-    this.currentDirection = currentDirection;
+    //console.log("new snake", this.body);
   }
 
-  move(direction: string) {
-    console.log("direction", direction);
-
-    const [snakeHead, directionShouldUpdate] = setSnakeHeadPosition(
+  move(direction: string, isGrowUp = false) {
+    const snakeHead = setSnakeHeadPosition(
       this.body[this.body.length - 1],
-      direction,
-      this.currentDirection
+      direction
     );
 
-    if (directionShouldUpdate && this.currentDirection !== direction) {
-      this.currentDirection = direction;
+    if (!isGrowUp) {
+      this.body.shift();
     }
-
-    this.body.shift();
+    
     this.body.push(snakeHead);
-
-    this.render();
   }
 
   render() {
@@ -66,8 +59,8 @@ class Snake {
         this.context.fillRect(
           this.body[i].x * this.blockWidth,
           this.body[i].y * this.blockWidth,
-          this.blockWidth,
-          this.blockWidth
+          this.blockWidth - 2,
+          this.blockWidth - 2
         );
       }
     }
