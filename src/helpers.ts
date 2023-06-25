@@ -2,21 +2,10 @@ import { BodyContent } from "./snake";
 
 export const setSnakeHeadPosition = (
   snakeHead: BodyContent,
-  direction: string,
-  currentDirection: string
-): [BodyContent, boolean] => {
-  let directionShouldUpdate = false;
+  direction: string
+): BodyContent => {
 
-  if (
-    (direction === "ArrowLeft" && currentDirection !== "ArrowRight") ||
-    (direction === "ArrowRight" && currentDirection !== "ArrowLeft") ||
-    (direction === "ArrowDown" && currentDirection !== "ArrowUp") ||
-    (direction === "ArrowUp" && currentDirection !== "ArrowDown")
-  ) {
-    directionShouldUpdate = true;
-  }
-
-  switch (directionShouldUpdate ? direction : currentDirection) {
+  switch (direction) {
     case "ArrowUp": {
       snakeHead = { ...snakeHead, y: snakeHead.y - 1 };
       break;
@@ -35,5 +24,5 @@ export const setSnakeHeadPosition = (
     }
   }
 
-  return [snakeHead, directionShouldUpdate];
+  return snakeHead;
 };
