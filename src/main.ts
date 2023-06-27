@@ -9,6 +9,10 @@ class SnakeApp {
   apple: InstanceType<typeof Apple>;
 
   startButton: HTMLButtonElement;
+  playImage: HTMLImageElement;
+  pauseImage: HTMLImageElement;
+  resetImage: HTMLImageElement;
+
   upButton: HTMLElement;
   downButton: HTMLElement;
   leftButton: HTMLElement;
@@ -30,6 +34,14 @@ class SnakeApp {
     this.apple = new Apple(this.snake.body);
 
     this.startButton = document.querySelector(".start") as HTMLButtonElement;
+    this.playImage = document.querySelector(".play-button") as HTMLImageElement;
+    this.pauseImage = document.querySelector(
+      ".pause-button"
+    ) as HTMLImageElement;
+    this.resetImage = document.querySelector(
+      ".reset-button"
+    ) as HTMLImageElement;
+
     this.upButton = document.querySelector(".button-up") as HTMLElement;
     this.downButton = document.querySelector(".button-down") as HTMLElement;
     this.leftButton = document.querySelector(".button-left") as HTMLElement;
@@ -50,11 +62,23 @@ class SnakeApp {
   }
 
   setupEventListeners(): void {
-    this.startButton.addEventListener("click", () => this.toggleGame());
+    this.startButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.toggleGame();
+    });
 
-    window.addEventListener("keydown", (e) =>
-      e.key === " " ? this.toggleGame() : this.changeDirection(e.key)
-    );
+    window.addEventListener("keydown", (e) => {
+      e.preventDefault();
+      if (!this.isPlaying) {
+        this.changeDirection(e.key);
+        this.toggleGame();
+      } else {
+        this.changeDirection(e.key);
+        if (e.key === " ") {
+          this.toggleGame();
+        }
+      }
+    });
 
     window.addEventListener("resize", () => {
       this.background.calculateDimensions();
@@ -81,19 +105,27 @@ class SnakeApp {
     if (!this.gameIsOver) {
       if (!this.isPlaying) {
         this.isPlaying = true;
-        this.startButton.textContent = "Pause";
+
+        this.resetImage.style.display = "none";
+        this.playImage.style.display = "none";
+        this.pauseImage.style.display = "block";
+
         this.moveSnake();
       } else {
         this.isPlaying = false;
-        this.startButton.textContent = "Continue";
+        this.resetImage.style.display = "none";
+        this.pauseImage.style.display = "none";
+        this.playImage.style.display = "block";
         clearTimeout(this.timeout);
       }
     } else {
       this.snake.init();
-      this.startButton.textContent = "Start";
+      this.resetImage.style.display = "none";
+      this.pauseImage.style.display = "none";
+      this.playImage.style.display = "block";
       this.gameIsOver = false;
       this.currentDirection = "ArrowRight";
-      // this.background.render();
+      // this.background.clear();
       this.score = 0;
       this.scoreContent.textContent = this.score.toString().padStart(4, "0");
     }
@@ -119,7 +151,7 @@ class SnakeApp {
   }
 
   changeDirection(direction: string): void {
-    if (this.isPlaying && this.isAbleChangeDirection) {
+    if (this.isAbleChangeDirection) {
       if (
         (direction === "ArrowLeft" && this.currentDirection !== "ArrowRight") ||
         (direction === "ArrowRight" && this.currentDirection !== "ArrowLeft") ||
@@ -144,7 +176,11 @@ class SnakeApp {
       this.isPlaying = false;
       this.gameIsOver = true;
       clearTimeout(this.timeout);
-      this.startButton.textContent = "Reset";
+
+      this.playImage.style.display = "none";
+      this.pauseImage.style.display = "none";
+      this.resetImage.style.display = "block";
+
       this.background.showNotification();
       return;
     }
@@ -155,7 +191,11 @@ class SnakeApp {
         this.isPlaying = false;
         this.gameIsOver = true;
         clearTimeout(this.timeout);
-        this.startButton.textContent = "Reset";
+
+        this.playImage.style.display = "none";
+        this.pauseImage.style.display = "none";
+        this.resetImage.style.display = "block";
+
         this.background.showNotification();
         return;
       }
@@ -178,6 +218,7 @@ class SnakeApp {
 
   init(): void {
     // this.background.render();
+    // this.background.showNotification();
     this.snake.render();
     this.apple.render();
   }

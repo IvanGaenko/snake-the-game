@@ -14,9 +14,13 @@ class Background extends CanvasContainer {
 
   showNotification() {
     if (this.context !== null && this.canvas !== null) {
-      // this.render("black");
+      this.context.fillStyle = "rgba(150, 120, 150, .5)";
+      this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      console.log(Math.round(this.canvas.height / 10));
+
       this.context.fillStyle = "white";
-      this.context.font = "36px verdana";
+      this.context.font = "36px Inter";
+      // this.context.font = `${Math.round(this.canvas.height / 10)}px Inter`;
       this.context.fillText(
         "Game Over!",
         this.canvas.width / 7,
@@ -34,14 +38,7 @@ class Background extends CanvasContainer {
 
   render(color = this.color) {
     if (this.context !== null && this.canvas !== null) {
-      this.context.clearRect(
-        0,
-        0,
-        // this.canvas.clientWidth,
-        // this.canvas.clientHeight
-        this.canvas.width,
-        this.canvas.height
-      );
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.context.fillStyle = color;
       // this.context.fillStyle = "rgba(255, 255, 255, .35)";
       this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);

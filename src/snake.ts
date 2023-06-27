@@ -8,18 +8,19 @@ export interface BodyContent {
 
 export type Body = BodyContent[];
 
-const defaultBody = [
-  { x: 8, y: 10 },
-  { x: 9, y: 10 },
-  { x: 10, y: 10 }
-];
+// const defaultBody = [
+//   { x: 8, y: 10 },
+//   { x: 9, y: 10 },
+//   { x: 10, y: 10 }
+// ];
 
 class Snake extends CanvasContainer {
   body: Body;
   color: string;
 
   constructor(
-    body: Body = JSON.parse(JSON.stringify(defaultBody)),
+    // body: Body = JSON.parse(JSON.stringify(defaultBody)),
+    body?: Body,
     color = "blue"
   ) {
     super();
@@ -28,12 +29,27 @@ class Snake extends CanvasContainer {
     this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
 
-    this.body = body;
+    this.body = body === undefined ? this.getDefaultSnake() : body;
     this.color = color;
   }
 
+  getDefaultSnake(): Body {
+    const body = [
+      { x: 0, y: 0 },
+      { x: 0, y: 0 },
+      { x: 0, y: 0 }
+    ];
+    for (let i = 0; i < body.length; i++) {
+      body[i].x = Math.floor(this.columnCount / 2) + i - 1;
+      body[i].y = Math.round(this.rowCount / 2);
+    }
+
+    return body;
+  }
+
   init() {
-    this.body = JSON.parse(JSON.stringify(defaultBody));
+    // this.body = JSON.parse(JSON.stringify(defaultBody));
+    this.body = this.getDefaultSnake();
     this.render();
   }
 
