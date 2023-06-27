@@ -1,3 +1,4 @@
+import CanvasContainer from "./CanvasContainer";
 import { setSnakeHeadPosition } from "./helpers";
 
 export interface BodyContent {
@@ -13,24 +14,20 @@ const defaultBody = [
   { x: 10, y: 10 }
 ];
 
-class Snake {
-  canvas: HTMLCanvasElement | null;
-  context: CanvasRenderingContext2D | null;
-
-  blockWidth: number;
-
+class Snake extends CanvasContainer {
   body: Body;
   color: string;
 
   constructor(
-    blockWidth: number,
     body: Body = JSON.parse(JSON.stringify(defaultBody)),
     color = "blue"
   ) {
+    super();
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
+    this.canvas.width = this.container.clientWidth;
+    this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
 
-    this.blockWidth = blockWidth;
     this.body = body;
     this.color = color;
   }
@@ -53,22 +50,24 @@ class Snake {
     this.body.push(snakeHead);
   }
 
+  resize() {
+    this.canvas.width = this.container.clientWidth;
+    this.canvas.height = this.container.clientHeight;
+
+    this.render();
+  }
+
   render() {
     if (this.context !== null && this.canvas !== null) {
-      this.context.clearRect(
-        0,
-        0,
-        this.canvas.clientWidth,
-        this.canvas.clientHeight
-      );
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       for (let i = 0; i < this.body.length; i++) {
         this.context.fillStyle =
           i === this.body.length - 1 ? "yellow" : this.color;
         this.context.fillRect(
-          this.body[i].x * this.blockWidth,
-          this.body[i].y * this.blockWidth,
-          this.blockWidth - 2,
-          this.blockWidth - 2
+          this.body[i].x * this.partWidth,
+          this.body[i].y * this.partHeight,
+          this.partWidth - 1,
+          this.partHeight - 1
         );
       }
     }

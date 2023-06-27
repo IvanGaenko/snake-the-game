@@ -1,22 +1,19 @@
+import CanvasContainer from "./CanvasContainer";
 import { Body } from "./snake";
 
-class Apple {
-  canvas: HTMLCanvasElement | null;
-  context: CanvasRenderingContext2D | null;
-  blockWidth: number;
-  blockCount: number;
-
+class Apple extends CanvasContainer {
   position: {
     x: number;
     y: number;
   };
   snakeBody: Body;
 
-  constructor(blockWidth: number, blockCount: number, body: Body) {
+  constructor(body: Body) {
+    super();
     this.canvas = document.querySelector("#apple") as HTMLCanvasElement;
+    this.canvas.width = this.container.clientWidth;
+    this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
-    this.blockWidth = blockWidth;
-    this.blockCount = blockCount;
     this.position = {
       x: 0,
       y: 0
@@ -35,8 +32,8 @@ class Apple {
     if (body.length === 0) return;
 
     this.position = {
-      x: Math.floor(Math.random() * this.blockCount),
-      y: Math.floor(Math.random() * this.blockCount)
+      x: Math.floor(Math.random() * this.columnCount),
+      y: Math.floor(Math.random() * this.rowCount)
     };
 
     for (let i = 0; i < body.length; i++) {
@@ -46,20 +43,22 @@ class Apple {
     }
   }
 
+  resize() {
+    this.canvas.width = this.container.clientWidth;
+    this.canvas.height = this.container.clientHeight;
+
+    this.render();
+  }
+
   render() {
     if (this.context !== null && this.canvas !== null) {
-      this.context.clearRect(
-        0,
-        0,
-        this.canvas.clientWidth,
-        this.canvas.clientHeight
-      );
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.context.fillStyle = "red";
       this.context.fillRect(
-        this.position.x * this.blockWidth,
-        this.position.y * this.blockWidth,
-        this.blockWidth - 2,
-        this.blockWidth - 2
+        this.position.x * this.partWidth,
+        this.position.y * this.partHeight,
+        this.partWidth - 1,
+        this.partHeight - 1
       );
     }
   }

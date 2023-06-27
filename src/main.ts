@@ -1,28 +1,4 @@
 import "./style.css";
-// import typescriptLogo from ''''./typescript.svg''''
-// import viteLogo from ''''/vite.svg''''
-// import { setupCounter } from ''''./counter.ts''''
-
-// document.querySelector<HTMLDivElement>(''''#app'''')!.innerHTML = `
-//   <div>
-//     <a href="https://vitejs.dev" target="_blank">
-//       <img src="${viteLogo}" class="logo" alt="Vite logo" />
-//     </a>
-//     <a href="https://www.typescriptlang.org/" target="_blank">
-//       <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-//     </a>
-//     <h1>Vite + TypeScript</h1>
-//     <div class="card">
-//       <button id="counter" type="button"></button>
-//     </div>
-//     <p class="read-the-docs">
-//       Click on the Vite and TypeScript logos to learn more
-//     </p>
-//   </div>
-// `
-
-// setupCounter(document.querySelector<HTMLButtonElement>(''''#counter'''')!)
-
 import Background from "./background";
 import Snake from "./snake";
 import Apple from "./apple";
@@ -50,12 +26,8 @@ class SnakeApp {
 
   constructor() {
     this.background = new Background("green");
-    this.snake = new Snake(this.background.blockWidth);
-    this.apple = new Apple(
-      this.background.blockWidth,
-      this.background.blockCount,
-      this.snake.body
-    );
+    this.snake = new Snake();
+    this.apple = new Apple(this.snake.body);
 
     this.startButton = document.querySelector(".start") as HTMLButtonElement;
     this.upButton = document.querySelector(".button-up") as HTMLElement;
@@ -63,7 +35,7 @@ class SnakeApp {
     this.leftButton = document.querySelector(".button-left") as HTMLElement;
     this.rightButton = document.querySelector(".button-right") as HTMLElement;
 
-    this.scoreContent = document.querySelector(".score-content") as HTMLElement;
+    this.scoreContent = document.querySelector(".score") as HTMLElement;
 
     this.isPlaying = false;
     this.isAbleChangeDirection = true;
@@ -83,6 +55,13 @@ class SnakeApp {
     window.addEventListener("keydown", (e) =>
       e.key === " " ? this.toggleGame() : this.changeDirection(e.key)
     );
+
+    window.addEventListener("resize", () => {
+      this.background.calculateDimensions();
+      this.background.resize();
+      this.snake.resize();
+      this.apple.resize();
+    });
 
     this.upButton.addEventListener("click", () =>
       this.changeDirection("ArrowUp")
@@ -114,9 +93,9 @@ class SnakeApp {
       this.startButton.textContent = "Start";
       this.gameIsOver = false;
       this.currentDirection = "ArrowRight";
-      this.background.render();
+      // this.background.render();
       this.score = 0;
-      this.scoreContent.textContent = this.score.toString();
+      this.scoreContent.textContent = this.score.toString().padStart(4, "0");
     }
   }
 
@@ -157,9 +136,9 @@ class SnakeApp {
     const snakeHead = this.snake.body[this.snake.body.length - 1];
 
     if (
-      snakeHead.x === this.background.blockCount ||
+      snakeHead.x === this.background.columnCount ||
       snakeHead.x < 0 ||
-      snakeHead.y === this.background.blockCount ||
+      snakeHead.y === this.background.rowCount ||
       snakeHead.y < 0
     ) {
       this.isPlaying = false;
@@ -191,14 +170,14 @@ class SnakeApp {
     ) {
       this.isAppleEaten = true;
       this.score = this.score + 1;
-      this.scoreContent.textContent = this.score.toString();
+      this.scoreContent.textContent = this.score.toString().padStart(4, "0");
 
       this.apple.init(this.snake.body);
     }
   }
 
   init(): void {
-    this.background.render();
+    // this.background.render();
     this.snake.render();
     this.apple.render();
   }

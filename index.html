@@ -8,27 +8,58 @@
   </head>
   <body>
     <div class="container">
-      <div class="logo">Snake yellow - head</div>
       <div class="content">
+        <header>
+          <div class="header-container">
+            <button class="start">
+              <img
+                width="24"
+                height="24"
+                src="https://img.icons8.com/flat-round/64/000000/play--v1.png"
+                alt="play--v1"
+              />
+            </button>
+            <div class="score">0000</div>
+            <div class="options-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-settings"
+              >
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </header>
+
         <div class="canvas-container">
-          <canvas id="background" width="300" height="300"></canvas>
-          <canvas id="snake" width="300" height="300"></canvas>
-          <canvas id="apple" width="300" height="300"></canvas>
+          <canvas id="background"></canvas>
+          <canvas id="snake"></canvas>
+          <canvas id="apple"></canvas>
         </div>
 
         <div class="panel">
-          <button class="start">Start</button>
-          <div class="score">Score: <span class="score-content">0</span></div>
           <div class="controls">
-            <button class="button-up">Up</button>
+            <button class="button-up"></button>
             <div class="mid-buttons">
-              <button class="button-left">Left</button>
-              <button class="button-right">Right</button>
+              <button class="button-left"></button>
+              <button class="button-right"></button>
             </div>
-            <button class="button-down">Down</button>
+            <button class="button-down"></button>
           </div>
         </div>
       </div>
+      <div class="options"></div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
