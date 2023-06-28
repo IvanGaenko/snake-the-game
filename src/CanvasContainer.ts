@@ -21,6 +21,10 @@ class CanvasContainer {
     this.partHeight = 0;
 
     this.calculateDimensions();
+
+    window.addEventListener("resize", () => {
+      this.calculateDimensions();
+    });
   }
 
   calculateDimensions() {

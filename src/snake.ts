@@ -8,21 +8,11 @@ export interface BodyContent {
 
 export type Body = BodyContent[];
 
-// const defaultBody = [
-//   { x: 8, y: 10 },
-//   { x: 9, y: 10 },
-//   { x: 10, y: 10 }
-// ];
-
 class Snake extends CanvasContainer {
   body: Body;
   color: string;
 
-  constructor(
-    // body: Body = JSON.parse(JSON.stringify(defaultBody)),
-    body?: Body,
-    color = "blue"
-  ) {
+  constructor(body?: Body, color = "rgba(0, 0, 255, 0.8)") {
     super();
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
     this.canvas.width = this.container.clientWidth;
@@ -48,7 +38,6 @@ class Snake extends CanvasContainer {
   }
 
   init() {
-    // this.body = JSON.parse(JSON.stringify(defaultBody));
     this.body = this.getDefaultSnake();
     this.render();
   }
@@ -66,25 +55,47 @@ class Snake extends CanvasContainer {
     this.body.push(snakeHead);
   }
 
-  resize() {
+  resize(isPlaying: boolean) {
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 
-    this.render();
+    if (!isPlaying) {
+      this.init();
+    } else {
+      this.render();
+    }
   }
 
-  render() {
+  clear() {
     if (this.context !== null && this.canvas !== null) {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
+
+  render(): void {
+    if (this.context !== null && this.canvas !== null) {
+      this.clear();
+
+      const round = Math.floor(
+        this.partWidth < this.partHeight
+          ? this.partWidth / 5
+          : this.partHeight / 5
+      );
+
       for (let i = 0; i < this.body.length; i++) {
+        this.context.beginPath();
+
         this.context.fillStyle =
-          i === this.body.length - 1 ? "yellow" : this.color;
-        this.context.fillRect(
+          i === this.body.length - 1 ? "rgba(0, 255, 0, 0.8)" : this.color;
+
+        this.context.roundRect(
           this.body[i].x * this.partWidth,
           this.body[i].y * this.partHeight,
           this.partWidth - 1,
-          this.partHeight - 1
+          this.partHeight - 1,
+          [round]
         );
+        this.context.fill();
       }
     }
   }

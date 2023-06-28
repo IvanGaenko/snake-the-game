@@ -43,23 +43,40 @@ class Apple extends CanvasContainer {
     }
   }
 
-  resize() {
+  resize(body: Body) {
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 
-    this.render();
+    this.init(body);
+  }
+
+  clear() {
+    if (this.context !== null && this.canvas !== null) {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   }
 
   render() {
     if (this.context !== null && this.canvas !== null) {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.context.fillStyle = "red";
-      this.context.fillRect(
+      this.clear();
+
+      this.context.beginPath();
+      this.context.fillStyle = "rgba(255, 0, 0, 0.7)";
+
+      const round = Math.floor(
+        this.partWidth < this.partHeight
+          ? this.partWidth / 2
+          : this.partHeight / 2
+      );
+
+      this.context.roundRect(
         this.position.x * this.partWidth,
         this.position.y * this.partHeight,
         this.partWidth - 1,
-        this.partHeight - 1
+        this.partHeight - 1,
+        [round]
       );
+      this.context.fill();
     }
   }
 }
