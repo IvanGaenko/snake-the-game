@@ -2,7 +2,8 @@ import "./style.css";
 import Background from "./background";
 import Snake from "./snake";
 import Apple from "./apple";
-import { debounce } from "./helpers";
+import { debounce, getSwipeDirection } from "./helpers";
+import { Touch } from "./types";
 
 class SnakeApp {
   background: InstanceType<typeof Background>;
@@ -15,11 +16,6 @@ class SnakeApp {
   pauseImage: HTMLImageElement;
   resetImage: HTMLImageElement;
 
-  upButton: HTMLElement;
-  downButton: HTMLElement;
-  leftButton: HTMLElement;
-  rightButton: HTMLElement;
-
   scoreContent: HTMLElement;
 
   isPlaying: boolean;
@@ -30,10 +26,7 @@ class SnakeApp {
   currentDirection: string;
   score: number;
 
-  touch: {
-    start: { x: number; y: number };
-    end: { x: number; y: number };
-  };
+  touch: Touch;
 
   constructor() {
     this.background = new Background("green");
@@ -53,11 +46,6 @@ class SnakeApp {
       ".reset-button"
     ) as HTMLImageElement;
 
-    this.upButton = document.querySelector(".button-up") as HTMLElement;
-    this.downButton = document.querySelector(".button-down") as HTMLElement;
-    this.leftButton = document.querySelector(".button-left") as HTMLElement;
-    this.rightButton = document.querySelector(".button-right") as HTMLElement;
-
     this.scoreContent = document.querySelector(".score") as HTMLElement;
 
     this.isPlaying = false;
@@ -69,8 +57,10 @@ class SnakeApp {
     this.score = 0;
 
     this.touch = {
+      isAble: true,
       start: { x: 0, y: 0 },
-      end: { x: 0, y: 0 }
+      end: { x: 0, y: 0 },
+      timeout: 0
     };
 
     this.init();
@@ -96,7 +86,8 @@ class SnakeApp {
       }
     });
 
-    window.addEventListener("resize", () => {
+    window.addEventListener("resize", (e) => {
+      e.preventDefault();
       this.background.resize(this.gameIsOver);
       this.snake.resize(this.isPlaying);
       this.apple.clear();
@@ -104,53 +95,82 @@ class SnakeApp {
 
     window.addEventListener(
       "resize",
-      debounce(() => {
+      debounce((e) => {
+        e.preventDefault();
         this.apple.resize(this.snake.body);
       })
     );
 
-    this.canvasContainer.addEventListener("touchstart", (e) =>
+    this.canvasContainer.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+
       this.touchHandler(
         e.type,
         e.changedTouches[0].screenX,
         e.changedTouches[0].screenY
-      )
-    );
+      );
+    });
 
-    this.canvasContainer.addEventListener("touchend", (e) =>
+    this.canvasContainer.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+
       this.touchHandler(
         e.type,
         e.changedTouches[0].screenX,
         e.changedTouches[0].screenY
-      )
-    );
+      );
+    });
 
-    this.upButton.addEventListener("click", () =>
-      this.changeDirection("ArrowUp")
-    );
-    this.downButton.addEventListener("click", () =>
-      this.changeDirection("ArrowDown")
-    );
-    this.leftButton.addEventListener("click", () =>
-      this.changeDirection("ArrowLeft")
-    );
-    this.rightButton.addEventListener("click", () =>
-      this.changeDirection("ArrowRight")
-    );
+    this.canvasContainer.addEventListener("touchend", (e) => {
+      e.preventDefault();
+
+      this.touchHandler(
+        e.type,
+        e.changedTouches[0].screenX,
+        e.changedTouches[0].screenY
+      );
+    });
   }
 
   touchHandler(type: string, screenX: number, screenY: number) {
     if (type === "touchstart") {
       this.touch.start.x = screenX;
       this.touch.start.y = screenY;
+
+      this.touch.timeout = setTimeout(() => {
+        this.touch.isAble = false;
+
+        const direction = getSwipeDirection(this.touch);
+        if (!this.isPlaying) {
+          this.changeDirection(direction);
+          this.toggleGame();
+        } else {
+          this.changeDirection(direction);
+        }
+      }, 150);
+    }
+
+    if (type === "touchmove") {
+      if (this.touch.isAble) {
+        this.touch.end.x = screenX;
+        this.touch.end.y = screenY;
+      }
     }
 
     if (type === "touchend") {
-      this.touch.end.x = screenX;
-      this.touch.end.y = screenY;
-    }
+      if (this.touch.isAble) {
+        const direction = getSwipeDirection(this.touch);
+        if (!this.isPlaying) {
+          this.changeDirection(direction);
+          this.toggleGame();
+        } else {
+          this.changeDirection(direction);
+        }
+      }
 
-    console.log(this.touch);
+      clearTimeout(this.touch.timeout);
+      this.touch.isAble = true;
+    }
   }
 
   toggleGame(): void {

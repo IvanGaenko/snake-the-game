@@ -1,4 +1,5 @@
 import { BodyContent } from "./snake";
+import { Touch } from "./types";
 
 export const setSnakeHeadPosition = (
   snakeHead: BodyContent,
@@ -26,12 +27,31 @@ export const setSnakeHeadPosition = (
   return snakeHead;
 };
 
-export const debounce = (fn: () => void) => {
+export const debounce = (fn: (e: Event) => void) => {
   let timer: number;
-  return () => {
+  return (e: Event) => {
     if (timer) {
       clearTimeout(timer);
     }
-    timer = setTimeout(fn, 500);
+    timer = setTimeout(fn, 500, e);
   };
+};
+
+export const getSwipeDirection = (touch: Touch): string => {
+  const deltaX = touch.end.x - touch.start.x;
+  const deltaY = touch.end.y - touch.start.y;
+
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    if (deltaX < 0) {
+      return "ArrowLeft";
+    } else {
+      return "ArrowRight";
+    }
+  } else {
+    if (deltaY < 0) {
+      return "ArrowUp";
+    } else {
+      return "ArrowDown";
+    }
+  }
 };
