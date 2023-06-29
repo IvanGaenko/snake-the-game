@@ -1,23 +1,9 @@
-import "./style.css";
-import Background from "./background";
-import Snake from "./snake";
-import Apple from "./apple";
 import { debounce, getSwipeDirection } from "./helpers";
 import { Touch } from "./types";
 
-class SnakeApp {
-  background: InstanceType<typeof Background>;
-  snake: InstanceType<typeof Snake>;
-  apple: InstanceType<typeof Apple>;
+import UIRenderer from "./UIRenderer";
 
-  canvasContainer: HTMLElement;
-  startButton: HTMLButtonElement;
-  playImage: HTMLImageElement;
-  pauseImage: HTMLImageElement;
-  resetImage: HTMLImageElement;
-
-  scoreContent: HTMLElement;
-
+class SnakeApp extends UIRenderer {
   isPlaying: boolean;
   isAbleChangeDirection: boolean;
   gameIsOver: boolean;
@@ -25,28 +11,12 @@ class SnakeApp {
   timeout: number | undefined;
   currentDirection: string;
   score: number;
+  speed: number;
 
   touch: Touch;
 
   constructor() {
-    this.background = new Background("green");
-    this.snake = new Snake();
-    this.apple = new Apple(this.snake.body);
-
-    this.canvasContainer = document.querySelector(
-      ".canvas-container"
-    ) as HTMLElement;
-
-    this.startButton = document.querySelector(".start") as HTMLButtonElement;
-    this.playImage = document.querySelector(".play-button") as HTMLImageElement;
-    this.pauseImage = document.querySelector(
-      ".pause-button"
-    ) as HTMLImageElement;
-    this.resetImage = document.querySelector(
-      ".reset-button"
-    ) as HTMLImageElement;
-
-    this.scoreContent = document.querySelector(".score") as HTMLElement;
+    super();
 
     this.isPlaying = false;
     this.isAbleChangeDirection = true;
@@ -55,6 +25,7 @@ class SnakeApp {
     this.timeout;
     this.currentDirection = "ArrowRight";
     this.score = 0;
+    this.speed = 5;
 
     this.touch = {
       isAble: true,
@@ -63,7 +34,6 @@ class SnakeApp {
       timeout: 0
     };
 
-    this.init();
     this.setupEventListeners();
   }
 
@@ -130,9 +100,29 @@ class SnakeApp {
         e.changedTouches[0].screenY
       );
     });
+
+    this.optionsButton.addEventListener("click", (e: Event) => {
+      e.preventDefault();
+      this.toggleOptions(true);
+    });
+
+    this.optionsButtonClose.addEventListener("click", (e: Event) => {
+      e.preventDefault();
+      this.toggleOptions(false);
+    });
   }
 
   touchHandler(type: string, screenX: number, screenY: number) {
+    const changeDirectionSwipe = () => {
+      const direction = getSwipeDirection(this.touch);
+      if (!this.isPlaying) {
+        this.changeDirection(direction);
+        this.toggleGame();
+      } else {
+        this.changeDirection(direction);
+      }
+    };
+
     if (type === "touchstart") {
       this.touch.start.x = screenX;
       this.touch.start.y = screenY;
@@ -140,12 +130,11 @@ class SnakeApp {
       this.touch.timeout = setTimeout(() => {
         this.touch.isAble = false;
 
-        const direction = getSwipeDirection(this.touch);
-        if (!this.isPlaying) {
-          this.changeDirection(direction);
-          this.toggleGame();
-        } else {
-          this.changeDirection(direction);
+        if (
+          this.touch.start.x !== this.touch.end.x &&
+          this.touch.start.y !== this.touch.end.y
+        ) {
+          changeDirectionSwipe();
         }
       }, 150);
     }
@@ -159,12 +148,13 @@ class SnakeApp {
 
     if (type === "touchend") {
       if (this.touch.isAble) {
-        const direction = getSwipeDirection(this.touch);
-        if (!this.isPlaying) {
-          this.changeDirection(direction);
-          this.toggleGame();
-        } else {
-          this.changeDirection(direction);
+        if (
+          this.touch.start.x !== this.touch.end.x &&
+          this.touch.start.y !== this.touch.end.y &&
+          this.touch.end.x !== 0 &&
+          this.touch.end.y !== 0
+        ) {
+          changeDirectionSwipe();
         }
       }
 
@@ -177,29 +167,15 @@ class SnakeApp {
     if (!this.gameIsOver) {
       if (!this.isPlaying) {
         this.isPlaying = true;
-
-        this.resetImage.style.display = "none";
-        this.playImage.style.display = "none";
-        this.pauseImage.style.display = "block";
-
+        this.setPlayButton("pause");
         this.moveSnake();
       } else {
         this.isPlaying = false;
-        this.resetImage.style.display = "none";
-        this.pauseImage.style.display = "none";
-        this.playImage.style.display = "block";
+        this.setPlayButton("play");
         clearTimeout(this.timeout);
       }
     } else {
-      this.snake.init();
-      this.resetImage.style.display = "none";
-      this.pauseImage.style.display = "none";
-      this.playImage.style.display = "block";
-      this.gameIsOver = false;
-      this.currentDirection = "ArrowRight";
-      this.background.clear();
-      this.score = 0;
-      this.scoreContent.textContent = this.score.toString().padStart(4, "0");
+      this.resetTheGame();
     }
   }
 
@@ -218,7 +194,7 @@ class SnakeApp {
 
       this.timeout = setTimeout(() => {
         this.moveSnake();
-      }, 400);
+      }, 1000 / this.speed);
     }
   }
 
@@ -245,13 +221,13 @@ class SnakeApp {
       snakeHead.y === this.background.rowCount ||
       snakeHead.y < 0
     ) {
-      this.stopTheGame();
+      this.setGameIsOver();
     }
 
     const snakeBody = this.snake.body.slice(0, -1);
     for (let i = 0; i < snakeBody.length; i++) {
       if (snakeBody[i].x === snakeHead.x && snakeBody[i].y === snakeHead.y) {
-        this.stopTheGame();
+        this.setGameIsOver();
       }
     }
   }
@@ -263,33 +239,34 @@ class SnakeApp {
       snakeHead.y === this.apple.position.y
     ) {
       this.isAppleEaten = true;
-      this.score = this.score + 1;
+      this.score = this.score + this.speed;
       this.scoreContent.textContent = this.score.toString().padStart(4, "0");
 
       this.apple.init(this.snake.body);
     }
   }
 
-  stopTheGame() {
+  setGameIsOver() {
     this.isPlaying = false;
     this.gameIsOver = true;
     clearTimeout(this.timeout);
-
-    this.playImage.style.display = "none";
-    this.pauseImage.style.display = "none";
-    this.resetImage.style.display = "block";
-
+    this.setPlayButton("reset");
     this.background.render();
     return;
   }
 
-  toggleSettings() {
-    console.log("settings");
+  resetTheGame() {
+    this.snake.init();
+    this.setPlayButton("play");
+    this.gameIsOver = false;
+    this.currentDirection = "ArrowRight";
+    this.background.clear();
+    this.score = 0;
+    this.scoreContent.textContent = this.score.toString().padStart(4, "0");
   }
 
-  init(): void {
-    this.snake.render();
-    this.apple.render();
+  toggleSettings() {
+    console.log("settings");
   }
 }
 
