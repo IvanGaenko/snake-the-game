@@ -1,5 +1,5 @@
 import CanvasContainer from "./CanvasContainer";
-import { Body } from "./Snake";
+import { Body } from "./snake";
 
 class Apple extends CanvasContainer {
   position: {

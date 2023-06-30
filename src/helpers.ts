@@ -1,4 +1,4 @@
-import { BodyContent } from "./Snake";
+import { BodyContent } from "./snake";
 import { Touch } from "./types";
 
 export const setSnakeHeadPosition = (

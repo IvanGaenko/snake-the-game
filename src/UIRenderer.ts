@@ -3,9 +3,9 @@ import "./style.css";
 import Header from "./components/Header";
 import Main from "./components/Main";
 
-import Background from "./Background";
-import Snake from "./Snake";
-import Apple from "./Apple";
+import Background from "./background";
+import Snake from "./snake";
+import Apple from "./apple";
 import Options from "./components/Options";
 
 class UIRenderer {
