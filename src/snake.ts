@@ -87,6 +87,7 @@ class Snake extends CanvasContainer {
 
         this.context.fillStyle =
           i === this.body.length - 1 ? "rgba(0, 255, 0, 0.8)" : this.color;
+        this.context.strokeStyle = "rgba(255, 255, 255, 0.4)";
 
         this.context.roundRect(
           this.body[i].x * this.partWidth,
@@ -96,6 +97,7 @@ class Snake extends CanvasContainer {
           [round]
         );
         this.context.fill();
+        this.context.stroke();
       }
     }
   }
