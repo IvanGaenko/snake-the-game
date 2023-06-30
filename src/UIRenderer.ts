@@ -20,6 +20,8 @@ class UIRenderer {
   startButton: HTMLButtonElement;
   optionsButton: HTMLButtonElement;
   optionsButtonClose: HTMLButtonElement;
+  decreaseButton: HTMLButtonElement;
+  increaseButton: HTMLButtonElement;
 
   playImage: HTMLImageElement;
   pauseImage: HTMLImageElement;
@@ -27,6 +29,7 @@ class UIRenderer {
 
   scoreContent: HTMLElement;
   optionsContainer: HTMLElement;
+  optionsSpeed: HTMLElement;
 
   constructor() {
     this.container = document.querySelector(".container") as HTMLElement;
@@ -44,6 +47,12 @@ class UIRenderer {
     this.optionsButtonClose = document.querySelector(
       ".options-close"
     ) as HTMLButtonElement;
+    this.decreaseButton = document.querySelector(
+      ".decrease-button"
+    ) as HTMLButtonElement;
+    this.increaseButton = document.querySelector(
+      ".increase-button"
+    ) as HTMLButtonElement;
 
     this.playImage = document.querySelector(".play-button") as HTMLImageElement;
     this.pauseImage = document.querySelector(
@@ -57,6 +66,7 @@ class UIRenderer {
     this.optionsContainer = document.querySelector(
       ".options-container"
     ) as HTMLElement;
+    this.optionsSpeed = document.querySelector(".options-speed") as HTMLElement;
 
     this.background = new Background();
     this.snake = new Snake();

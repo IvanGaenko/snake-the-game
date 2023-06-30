@@ -12,6 +12,7 @@ class SnakeApp extends UIRenderer {
   currentDirection: string;
   score: number;
   speed: number;
+  isPaused: boolean;
 
   touch: Touch;
 
@@ -26,6 +27,7 @@ class SnakeApp extends UIRenderer {
     this.currentDirection = "ArrowRight";
     this.score = 0;
     this.speed = 5;
+    this.isPaused = false;
 
     this.touch = {
       isAble: true,
@@ -103,12 +105,22 @@ class SnakeApp extends UIRenderer {
 
     this.optionsButton.addEventListener("click", (e: Event) => {
       e.preventDefault();
-      this.toggleOptions(true);
+      this.openSettings();
     });
 
     this.optionsButtonClose.addEventListener("click", (e: Event) => {
       e.preventDefault();
-      this.toggleOptions(false);
+      this.closeSettings();
+    });
+
+    this.decreaseButton.addEventListener("click", (e: Event) => {
+      e.preventDefault();
+      this.decreaseSpeed();
+    });
+
+    this.increaseButton.addEventListener("click", (e: Event) => {
+      e.preventDefault();
+      this.increaseSpeed();
     });
   }
 
@@ -163,16 +175,24 @@ class SnakeApp extends UIRenderer {
     }
   }
 
+  startGame() {
+    this.isPlaying = true;
+    this.setPlayButton("pause");
+    this.moveSnake();
+  }
+
+  pauseGame() {
+    this.isPlaying = false;
+    this.setPlayButton("play");
+    clearTimeout(this.timeout);
+  }
+
   toggleGame(): void {
     if (!this.gameIsOver) {
       if (!this.isPlaying) {
-        this.isPlaying = true;
-        this.setPlayButton("pause");
-        this.moveSnake();
+        this.startGame();
       } else {
-        this.isPlaying = false;
-        this.setPlayButton("play");
-        clearTimeout(this.timeout);
+        this.pauseGame();
       }
     } else {
       this.resetTheGame();
@@ -265,8 +285,36 @@ class SnakeApp extends UIRenderer {
     this.scoreContent.textContent = this.score.toString().padStart(4, "0");
   }
 
-  toggleSettings() {
-    console.log("settings");
+  openSettings() {
+    if (this.isPlaying) {
+      this.pauseGame();
+      this.isPaused = true;
+    }
+
+    this.optionsSpeed.textContent = this.speed.toString();
+    this.toggleOptions(true);
+  }
+
+  increaseSpeed() {
+    if (this.speed < 20) {
+      this.speed++;
+      this.optionsSpeed.textContent = this.speed.toString();
+    }
+  }
+
+  decreaseSpeed() {
+    if (this.speed > 1) {
+      this.speed--;
+      this.optionsSpeed.textContent = this.speed.toString();
+    }
+  }
+
+  closeSettings() {
+    if (this.isPaused) {
+      this.isPaused = false;
+      this.startGame();
+    }
+    this.toggleOptions(false);
   }
 }
 

@@ -1,6 +1,7 @@
 class Header {
   render(): HTMLElement {
     const header = document.createElement("header");
+    header.className = "header";
     header.innerHTML = `
     <div class="header-container">
       <button class="start">
