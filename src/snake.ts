@@ -34,8 +34,8 @@ class Snake {
     this.partHeight = partHeight;
 
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
-    this.canvas.width = this.container.clientWidth;
-    this.canvas.height = this.container.clientHeight;
+    // this.canvas.width = this.container.clientWidth;
+    // this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
 
     this.body = body === undefined ? this.getDefaultSnake() : body;
@@ -76,6 +76,7 @@ class Snake {
   }
 
   resize(isPlaying: boolean) {
+    console.log("snake resize");
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 

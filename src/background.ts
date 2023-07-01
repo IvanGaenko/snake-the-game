@@ -6,8 +6,8 @@ class Background {
   constructor(container: HTMLElement) {
     this.container = container;
     this.canvas = document.querySelector("#background") as HTMLCanvasElement;
-    this.canvas.width = this.container.clientWidth;
-    this.canvas.height = this.container.clientHeight;
+    // this.canvas.width = this.container.clientWidth;
+    // this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
 
     console.log("bac", this.canvas.width, this.canvas.height);
@@ -15,6 +15,7 @@ class Background {
   }
 
   resize(gameIsOver: boolean) {
+    console.log("background resize");
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 

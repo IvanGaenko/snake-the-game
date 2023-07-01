@@ -31,8 +31,8 @@ class Apple {
     this.partHeight = partHeight;
 
     this.canvas = document.querySelector("#apple") as HTMLCanvasElement;
-    this.canvas.width = this.container.clientWidth;
-    this.canvas.height = this.container.clientHeight;
+    // this.canvas.width = this.container.clientWidth;
+    // this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
     this.position = {
       x: 0,
@@ -66,6 +66,7 @@ class Apple {
   }
 
   resize(body: Body) {
+    console.log("apple resize");
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 
