@@ -47,7 +47,7 @@ class SnakeApp extends UIRenderer {
 
     window.addEventListener("keydown", (e) => {
       e.preventDefault();
-      if (!this.isPlaying) {
+      if (!this.isPlaying && !this.gameIsOver) {
         if (
           e.key === " " ||
           e.key === "ArrowUp" ||
@@ -135,9 +135,16 @@ class SnakeApp extends UIRenderer {
   touchHandler(type: string, screenX: number, screenY: number) {
     const changeDirectionSwipe = () => {
       const direction = getSwipeDirection(this.touch);
-      if (!this.isPlaying) {
-        this.changeDirection(direction);
-        this.toggleGame();
+      if (!this.isPlaying && !this.gameIsOver) {
+        if (
+          direction === "ArrowUp" ||
+          direction === "ArrowDown" ||
+          direction === "ArrowLeft" ||
+          direction === "ArrowRight"
+        ) {
+          this.changeDirection(direction);
+          this.toggleGame();
+        }
       } else {
         this.changeDirection(direction);
       }
