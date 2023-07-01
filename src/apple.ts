@@ -31,8 +31,6 @@ class Apple {
     this.partHeight = partHeight;
 
     this.canvas = document.querySelector("#apple") as HTMLCanvasElement;
-    // this.canvas.width = this.container.clientWidth;
-    // this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
     this.position = {
       x: 0,
@@ -41,8 +39,6 @@ class Apple {
     this.snakeBody = body;
 
     this._generatePosition(this.snakeBody);
-    console.log("apple", this.canvas.width, this.canvas.height);
-    console.log("apple col", this.columnCount, this.rowCount);
   }
 
   init(body: Body) {
@@ -66,7 +62,6 @@ class Apple {
   }
 
   resize(body: Body) {
-    console.log("apple resize");
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 
@@ -80,7 +75,6 @@ class Apple {
   }
 
   render() {
-    console.log("apple render", this.canvas.width, this.canvas.height);
     if (this.context !== null && this.canvas !== null) {
       this.clear();
 

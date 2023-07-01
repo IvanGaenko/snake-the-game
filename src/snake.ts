@@ -1,4 +1,3 @@
-// import CanvasContainer from "./CanvasContainer";
 import { setSnakeHeadPosition } from "./helpers";
 
 export interface BodyContent {
@@ -34,13 +33,9 @@ class Snake {
     this.partHeight = partHeight;
 
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
-    // this.canvas.width = this.container.clientWidth;
-    // this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
 
     this.body = body === undefined ? this.getDefaultSnake() : body;
-    console.log("snake", this.canvas.width, this.canvas.height);
-    console.log("snake col", this.columnCount, this.rowCount);
   }
 
   getDefaultSnake(): Body {
@@ -76,7 +71,6 @@ class Snake {
   }
 
   resize(isPlaying: boolean) {
-    console.log("snake resize");
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
 
@@ -94,7 +88,6 @@ class Snake {
   }
 
   render(): void {
-    console.log("snake render", this.canvas.width, this.canvas.height);
     if (this.context !== null && this.canvas !== null) {
       this.clear();
 

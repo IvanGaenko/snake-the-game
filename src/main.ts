@@ -46,21 +46,24 @@ class SnakeApp extends CanvasRenderer {
 
     window.addEventListener("keydown", (e) => {
       e.preventDefault();
-      if (!this.isPlaying && !this.gameIsOver) {
-        if (
-          e.key === " " ||
-          e.key === "ArrowUp" ||
-          e.key === "ArrowDown" ||
-          e.key === "ArrowLeft" ||
-          e.key === "ArrowRight"
-        ) {
+
+      if (!this.isPaused) {
+        if (!this.isPlaying && !this.gameIsOver) {
+          if (
+            e.key === " " ||
+            e.key === "ArrowUp" ||
+            e.key === "ArrowDown" ||
+            e.key === "ArrowLeft" ||
+            e.key === "ArrowRight"
+          ) {
+            this.changeDirection(e.key);
+            this.toggleGame();
+          }
+        } else {
           this.changeDirection(e.key);
-          this.toggleGame();
-        }
-      } else {
-        this.changeDirection(e.key);
-        if (e.key === " ") {
-          this.toggleGame();
+          if (e.key === " ") {
+            this.toggleGame();
+          }
         }
       }
     });
@@ -83,49 +86,55 @@ class SnakeApp extends CanvasRenderer {
     this.canvasContainer.addEventListener("touchstart", (e) => {
       e.preventDefault();
 
-      this.touchHandler(
-        e.type,
-        e.changedTouches[0].screenX,
-        e.changedTouches[0].screenY
-      );
+      if (!this.isPaused) {
+        this.touchHandler(
+          e.type,
+          e.changedTouches[0].screenX,
+          e.changedTouches[0].screenY
+        );
+      }
     });
 
     this.canvasContainer.addEventListener("touchmove", (e) => {
       e.preventDefault();
 
-      this.touchHandler(
-        e.type,
-        e.changedTouches[0].screenX,
-        e.changedTouches[0].screenY
-      );
+      if (!this.isPaused) {
+        this.touchHandler(
+          e.type,
+          e.changedTouches[0].screenX,
+          e.changedTouches[0].screenY
+        );
+      }
     });
 
     this.canvasContainer.addEventListener("touchend", (e) => {
       e.preventDefault();
 
-      this.touchHandler(
-        e.type,
-        e.changedTouches[0].screenX,
-        e.changedTouches[0].screenY
-      );
+      if (!this.isPaused) {
+        this.touchHandler(
+          e.type,
+          e.changedTouches[0].screenX,
+          e.changedTouches[0].screenY
+        );
+      }
     });
 
-    this.optionsButton.addEventListener("click", (e: Event) => {
+    this.optionsButton.addEventListener("click", (e) => {
       e.preventDefault();
       this.openSettings();
     });
 
-    this.optionsButtonClose.addEventListener("click", (e: Event) => {
+    this.optionsButtonClose.addEventListener("click", (e) => {
       e.preventDefault();
       this.closeSettings();
     });
 
-    this.decreaseButton.addEventListener("click", (e: Event) => {
+    this.decreaseButton.addEventListener("click", (e) => {
       e.preventDefault();
       this.decreaseSpeed();
     });
 
-    this.increaseButton.addEventListener("click", (e: Event) => {
+    this.increaseButton.addEventListener("click", (e) => {
       e.preventDefault();
       this.increaseSpeed();
     });
@@ -248,8 +257,6 @@ class SnakeApp extends CanvasRenderer {
 
   checkIntersection(): void {
     const snakeHead = this.snake.body[this.snake.body.length - 1];
-    console.log("check", this.columnCount, this.rowCount);
-
     if (
       snakeHead.x === this.columnCount ||
       snakeHead.x < 0 ||
@@ -303,9 +310,9 @@ class SnakeApp extends CanvasRenderer {
   openSettings() {
     if (this.isPlaying) {
       this.pauseGame();
-      this.isPaused = true;
     }
 
+    this.isPaused = true;
     this.optionsSpeed.textContent = this.speed.toString();
     this.toggleOptions(true);
   }
@@ -325,10 +332,11 @@ class SnakeApp extends CanvasRenderer {
   }
 
   closeSettings() {
-    if (this.isPaused) {
-      this.isPaused = false;
+    if (this.isPlaying) {
       this.startGame();
     }
+
+    this.isPaused = false;
     this.toggleOptions(false);
   }
 }
