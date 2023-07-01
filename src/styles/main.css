@@ -13,4 +13,5 @@ canvas {
 
 #background {
   z-index: 2;
+  border: 1px solid yellow;
 }
