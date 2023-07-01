@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/snake-the-game/"
+  base: "/snake-the-game/",
+  assetsInclude: ["**/*.png"]
 });
