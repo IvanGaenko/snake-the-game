@@ -9,7 +9,7 @@ class Options {
       <header class="options-header">
         <div class="options-logo">Snake</div>
         <button class="options-close">
-          <img src="${close}" class="close-button" alt="close-button" />
+          <img src="/snake-the-game/${close}" class="close-button" alt="close-button" />
         </button>
       </header>
       <div class="options-main">

@@ -10,14 +10,14 @@ class Header {
     header.innerHTML = `
     <div class="header-container">
       <button class="start">
-        <img src="${play}" class="play-button" alt="play-button" />
-        <img src="${pause}" class="pause-button" alt="pause-buttom" />
-        <img src="${reset}" class="reset-button" alt="reset-buttom" />
+        <img src="/snake-the-game/${play}" class="play-button" alt="play-button" />
+        <img src="/snake-the-game/${pause}" class="pause-button" alt="pause-buttom" />
+        <img src="/snake-the-game/${reset}" class="reset-button" alt="reset-buttom" />
       </button>
       <div class="score">0000</div>
       <button class="options">
         <img
-          src="${options}"
+          src="/snake-the-game/${options}"
           class="options-button"
           alt="options-button"
         />
