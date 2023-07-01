@@ -51,6 +51,7 @@ class CanvasRenderer extends UIRenderer {
       this.calculateDimensions();
     });
 
+    this.calculateDimensions();
     this.initCanvasElements();
   }
 
