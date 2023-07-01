@@ -1,9 +1,8 @@
+import CanvasRenderer from "./CanvasRenderer";
 import { debounce, getSwipeDirection } from "./helpers";
 import { Touch } from "./types";
 
-import UIRenderer from "./UIRenderer";
-
-class SnakeApp extends UIRenderer {
+class SnakeApp extends CanvasRenderer {
   isPlaying: boolean;
   isAbleChangeDirection: boolean;
   gameIsOver: boolean;
@@ -251,9 +250,9 @@ class SnakeApp extends UIRenderer {
     const snakeHead = this.snake.body[this.snake.body.length - 1];
 
     if (
-      snakeHead.x === this.background.columnCount ||
+      snakeHead.x === this.columnCount ||
       snakeHead.x < 0 ||
-      snakeHead.y === this.background.rowCount ||
+      snakeHead.y === this.rowCount ||
       snakeHead.y < 0
     ) {
       this.setGameIsOver();

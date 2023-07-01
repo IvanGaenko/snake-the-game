@@ -1,4 +1,4 @@
-import CanvasContainer from "./CanvasContainer";
+// import CanvasContainer from "./CanvasContainer";
 import { setSnakeHeadPosition } from "./helpers";
 
 export interface BodyContent {
@@ -8,19 +8,37 @@ export interface BodyContent {
 
 export type Body = BodyContent[];
 
-class Snake extends CanvasContainer {
+class Snake {
   body: Body;
-  color: string;
+  container: HTMLElement;
+  columnCount: number;
+  rowCount: number;
+  partWidth: number;
+  partHeight: number;
 
-  constructor(body?: Body, color = "rgba(0, 0, 255, 0.8)") {
-    super();
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D | null;
+
+  constructor(
+    container: HTMLElement,
+    columnCount: number,
+    rowCount: number,
+    partWidth: number,
+    partHeight: number,
+    body?: Body
+  ) {
+    this.container = container;
+    this.columnCount = columnCount;
+    this.rowCount = rowCount;
+    this.partWidth = partWidth;
+    this.partHeight = partHeight;
+
     this.canvas = document.querySelector("#snake") as HTMLCanvasElement;
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
 
     this.body = body === undefined ? this.getDefaultSnake() : body;
-    this.color = color;
   }
 
   getDefaultSnake(): Body {
@@ -86,7 +104,9 @@ class Snake extends CanvasContainer {
         this.context.beginPath();
 
         this.context.fillStyle =
-          i === this.body.length - 1 ? "rgba(0, 255, 0, 0.8)" : this.color;
+          i === this.body.length - 1
+            ? "rgba(0, 255, 0, 0.8)"
+            : "rgba(0, 0, 255, 0.8)";
         this.context.strokeStyle = "rgba(255, 255, 255, 0.4)";
 
         this.context.roundRect(

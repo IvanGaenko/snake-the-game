@@ -1,8 +1,10 @@
-import CanvasContainer from "./CanvasContainer";
+class Background {
+  container: HTMLElement;
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D | null;
 
-class Background extends CanvasContainer {
-  constructor() {
-    super();
+  constructor(container: HTMLElement) {
+    this.container = container;
     this.canvas = document.querySelector("#background") as HTMLCanvasElement;
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;

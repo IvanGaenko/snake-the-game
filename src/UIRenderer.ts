@@ -2,19 +2,11 @@ import "./styles/index.css";
 
 import Header from "./components/Header";
 import Main from "./components/Main";
-
-import Background from "./background";
-import Snake from "./snake";
-import Apple from "./apple";
 import Options from "./components/Options";
 
 class UIRenderer {
   container: HTMLElement;
   content: HTMLElement;
-
-  background: InstanceType<typeof Background>;
-  snake: InstanceType<typeof Snake>;
-  apple: InstanceType<typeof Apple>;
 
   canvasContainer: HTMLElement;
   startButton: HTMLButtonElement;
@@ -67,12 +59,6 @@ class UIRenderer {
       ".options-container"
     ) as HTMLElement;
     this.optionsSpeed = document.querySelector(".options-speed") as HTMLElement;
-
-    this.background = new Background();
-    this.snake = new Snake();
-    this.apple = new Apple(this.snake.body);
-
-    this.initCanvasElements();
   }
 
   setupUI() {
@@ -84,11 +70,6 @@ class UIRenderer {
       this.content.appendChild(UIcomponent);
     }
     this.container.appendChild(new Options().render());
-  }
-
-  initCanvasElements() {
-    this.snake.render();
-    this.apple.render();
   }
 
   setPlayButton(type: string) {

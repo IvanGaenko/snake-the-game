@@ -1,15 +1,35 @@
-import CanvasContainer from "./CanvasContainer";
 import { Body } from "./snake";
 
-class Apple extends CanvasContainer {
+class Apple {
+  container: HTMLElement;
+  columnCount: number;
+  rowCount: number;
+  partWidth: number;
+  partHeight: number;
+
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D | null;
+
   position: {
     x: number;
     y: number;
   };
   snakeBody: Body;
 
-  constructor(body: Body) {
-    super();
+  constructor(
+    body: Body,
+    container: HTMLElement,
+    columnCount: number,
+    rowCount: number,
+    partWidth: number,
+    partHeight: number
+  ) {
+    this.container = container;
+    this.columnCount = columnCount;
+    this.rowCount = rowCount;
+    this.partWidth = partWidth;
+    this.partHeight = partHeight;
+
     this.canvas = document.querySelector("#apple") as HTMLCanvasElement;
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
