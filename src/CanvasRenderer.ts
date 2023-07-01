@@ -58,12 +58,14 @@ class CanvasRenderer extends UIRenderer {
   calculateDimensions() {
     console.log("calculate", this.canvasContainer);
 
-    this.columnCount = Math.round(
-      this.canvasContainer.clientWidth / desiredBlockSize
-    );
-    this.rowCount = Math.round(
-      this.canvasContainer.clientHeight / desiredBlockSize
-    );
+    // this.columnCount = Math.round(
+    //   this.canvasContainer.clientWidth / desiredBlockSize
+    // );
+    // this.rowCount = Math.round(
+    //   this.canvasContainer.clientHeight / desiredBlockSize
+    // );
+    this.columnCount = Math.round(300 / desiredBlockSize);
+    this.rowCount = Math.round(300 / desiredBlockSize);
 
     this.partWidth = this.canvasContainer.clientWidth / this.columnCount;
 
