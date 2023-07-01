@@ -29,8 +29,6 @@ class Background extends CanvasContainer {
       const fontHeight = Math.round(
         Math.min(this.canvas.height, this.canvas.width) / 6
       );
-      this.context.fillStyle = "rgba(150, 120, 150, .5)";
-      this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       this.context.fillStyle = "white";
       this.context.font = `${fontHeight}px Inter`;

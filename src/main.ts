@@ -148,7 +148,7 @@ class SnakeApp extends UIRenderer {
         ) {
           changeDirectionSwipe();
         }
-      }, 150);
+      }, 100);
     }
 
     if (type === "touchmove") {

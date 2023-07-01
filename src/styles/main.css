@@ -1,0 +1,15 @@
+.canvas-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(5px);
+}
+
+canvas {
+  position: absolute;
+}
+
+#background {
+  z-index: 2;
+}

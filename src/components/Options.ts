@@ -1,3 +1,5 @@
+import close from "../icons/close.png";
+
 class Options {
   render(): HTMLElement {
     const div = document.createElement("div");
@@ -7,7 +9,7 @@ class Options {
       <header class="options-header">
         <div class="options-logo">Snake</div>
         <button class="options-close">
-          <img src="/close.png" class="close-button" alt="close-button" />
+          <img src="${close}" class="close-button" alt="close-button" />
         </button>
       </header>
       <div class="options-main">
