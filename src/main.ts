@@ -48,8 +48,16 @@ class SnakeApp extends UIRenderer {
     window.addEventListener("keydown", (e) => {
       e.preventDefault();
       if (!this.isPlaying) {
-        this.changeDirection(e.key);
-        this.toggleGame();
+        if (
+          e.key === " " ||
+          e.key === "ArrowUp" ||
+          e.key === "ArrowDown" ||
+          e.key === "ArrowLeft" ||
+          e.key === "ArrowRight"
+        ) {
+          this.changeDirection(e.key);
+          this.toggleGame();
+        }
       } else {
         this.changeDirection(e.key);
         if (e.key === " ") {
