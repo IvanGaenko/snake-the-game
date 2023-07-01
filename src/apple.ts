@@ -41,6 +41,8 @@ class Apple {
     this.snakeBody = body;
 
     this._generatePosition(this.snakeBody);
+    console.log("apple", this.canvas.width, this.canvas.height);
+    console.log("apple col", this.columnCount, this.rowCount);
   }
 
   init(body: Body) {
@@ -77,6 +79,7 @@ class Apple {
   }
 
   render() {
+    console.log("apple render", this.canvas.width, this.canvas.height);
     if (this.context !== null && this.canvas !== null) {
       this.clear();
 

@@ -70,6 +70,7 @@ class UIRenderer {
       this.content.appendChild(UIcomponent);
     }
     this.container.appendChild(new Options().render());
+    console.log("ui setuped");
   }
 
   setPlayButton(type: string) {

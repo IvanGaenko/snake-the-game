@@ -9,6 +9,9 @@ class Background {
     this.canvas.width = this.container.clientWidth;
     this.canvas.height = this.container.clientHeight;
     this.context = this.canvas.getContext("2d");
+
+    console.log("bac", this.canvas.width, this.canvas.height);
+    // console.log("apple col", this.columnCount, this.rowCount);
   }
 
   resize(gameIsOver: boolean) {

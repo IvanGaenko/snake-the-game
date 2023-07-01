@@ -39,6 +39,8 @@ class Snake {
     this.context = this.canvas.getContext("2d");
 
     this.body = body === undefined ? this.getDefaultSnake() : body;
+    console.log("snake", this.canvas.width, this.canvas.height);
+    console.log("snake col", this.columnCount, this.rowCount);
   }
 
   getDefaultSnake(): Body {
@@ -91,6 +93,7 @@ class Snake {
   }
 
   render(): void {
+    console.log("snake render", this.canvas.width, this.canvas.height);
     if (this.context !== null && this.canvas !== null) {
       this.clear();
 

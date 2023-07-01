@@ -248,6 +248,7 @@ class SnakeApp extends CanvasRenderer {
 
   checkIntersection(): void {
     const snakeHead = this.snake.body[this.snake.body.length - 1];
+    console.log("check", this.columnCount, this.rowCount);
 
     if (
       snakeHead.x === this.columnCount ||

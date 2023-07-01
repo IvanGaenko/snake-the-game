@@ -6,7 +6,7 @@ import Apple from "./apple";
 import UIRenderer from "./UIRenderer";
 
 class CanvasRenderer extends UIRenderer {
-  container: HTMLElement;
+  // canvasContainer: HTMLElement;
 
   background: InstanceType<typeof Background>;
   snake: InstanceType<typeof Snake>;
@@ -19,7 +19,9 @@ class CanvasRenderer extends UIRenderer {
 
   constructor() {
     super();
-    this.container = document.querySelector(".canvas-container") as HTMLElement;
+    // this.canvasContainer = document.querySelector(
+    //   ".canvas-container"
+    // ) as HTMLElement;
 
     this.columnCount = 0;
     this.rowCount = 0;
@@ -28,9 +30,9 @@ class CanvasRenderer extends UIRenderer {
 
     this.calculateDimensions();
 
-    this.background = new Background(this.container);
+    this.background = new Background(this.canvasContainer);
     this.snake = new Snake(
-      this.container,
+      this.canvasContainer,
       this.columnCount,
       this.rowCount,
       this.partWidth,
@@ -38,7 +40,7 @@ class CanvasRenderer extends UIRenderer {
     );
     this.apple = new Apple(
       this.snake.body,
-      this.container,
+      this.canvasContainer,
       this.columnCount,
       this.rowCount,
       this.partWidth,
@@ -53,14 +55,18 @@ class CanvasRenderer extends UIRenderer {
   }
 
   calculateDimensions() {
+    console.log("calculate", this.canvasContainer);
+
     this.columnCount = Math.round(
-      this.container.clientWidth / desiredBlockSize
+      this.canvasContainer.clientWidth / desiredBlockSize
     );
-    this.rowCount = Math.round(this.container.clientHeight / desiredBlockSize);
+    this.rowCount = Math.round(
+      this.canvasContainer.clientHeight / desiredBlockSize
+    );
 
-    this.partWidth = this.container.clientWidth / this.columnCount;
+    this.partWidth = this.canvasContainer.clientWidth / this.columnCount;
 
-    this.partHeight = this.container.clientHeight / this.rowCount;
+    this.partHeight = this.canvasContainer.clientHeight / this.rowCount;
   }
 
   initCanvasElements() {
